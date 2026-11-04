@@ -1,7 +1,8 @@
 name: Release
 
 # Runs when a v* tag is pushed (`npm version` creates one; see AGENTS.md → Releasing).
-# Publishes to npm through trusted publishing, so there's no npm token to manage.
+# Stages the release on npm through trusted publishing, so there's no npm token to
+# manage. It goes live once a maintainer approves it with 2FA (see AGENTS.md).
 # The trusted publisher on npmjs.com names this file: keep it called release.yml.
 
 on:
@@ -23,8 +24,8 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
 
-      - name: Use npm 11.5.1 or newer (needed for trusted publishing)
-        run: npm install -g npm@^11.5.1
+      - name: Use npm 11.15 or newer (needed for staged publishing)
+        run: npm install -g npm@^11.15.0
 
       - name: Check the tag matches package.json
         run: |
@@ -38,12 +39,13 @@ jobs:
 
       - run: npm test
 
-      - name: Publish to npm
+      - name: Stage the release on npm
         run: |
           if [ "$(npm view "$PACKAGE@$VERSION" version 2>/dev/null)" = "$VERSION" ]; then
             echo "$PACKAGE@$VERSION is already on npm, skipping."
           else
-            npm publish
+            npm stage publish .
+            echo "::notice::$PACKAGE@$VERSION is staged. Approve it on npmjs.com or with npm stage approve to publish it."
           fi
 
       - name: Create the GitHub release

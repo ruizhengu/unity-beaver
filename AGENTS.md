@@ -37,16 +37,17 @@ claude plugin validate --strict .
 
 ## Releasing
 
-The CLI is published to npm as [`unity-beaver`](https://www.npmjs.com/package/unity-beaver) (before 0.3.0: `unity-agent-cli`, now deprecated). Pushing a `v*` tag runs `.github/workflows/release.yml`, which tests, publishes to npm with provenance, and creates a GitHub release from the matching `CHANGELOG.md` section.
+The CLI is published to npm as [`unity-beaver`](https://www.npmjs.com/package/unity-beaver) (before 0.3.0: `unity-agent-cli`, now deprecated). Pushing a `v*` tag runs `.github/workflows/release.yml`, which tests, stages the release on npm with provenance, and creates a GitHub release from the matching `CHANGELOG.md` section. A staged release isn't installable until a maintainer approves it with 2FA.
 
 1. Add a `## x.y.z (date)` section to `CHANGELOG.md` and commit it.
 2. `npm version patch` (or `minor`, `major`, `x.y.z`). It refuses if step 1 is missing, runs the tests, bumps `package.json` and the plugin manifest together, and creates the commit and tag.
 3. `git push --follow-tags`
+4. When the workflow finishes, approve the release: on the package's npmjs.com page under **Staged Packages**, or `npm stage list` then `npm stage approve <stage-id>`.
 
 Bump the Unity package's own version (`UnityPackage/package.json`) only when its C# changes.
 
 **One-time npm setup** (already done once the package exists on npm):
 
 1. Publish the first version by hand from the repo root: `npm login`, then `npm publish`. npm only lets an existing package trust a publisher.
-2. On npmjs.com, open the package's **Settings › Trusted Publisher**, choose GitHub Actions, and enter owner `ruizhengu`, repository `unity-beaver`, workflow `release.yml`, no environment, and allow `npm publish`.
+2. On npmjs.com, open the package's **Settings › Trusted Publisher**, choose GitHub Actions, and enter owner `ruizhengu`, repository `unity-beaver`, workflow `release.yml`, no environment. Leave direct publishing unchecked, so its permission is `npm stage publish` and every release waits for approval.
 3. Use it within two days: npm expires a trusted publisher that hasn't completed a publish by then (delete and re-add it if that happens). Once it works, consider **Publishing access › Require two-factor authentication and disallow tokens**.
