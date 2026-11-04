@@ -1,0 +1,13 @@
+{
+  "name": "unity-agent-bridge",
+  "version": "0.2.0",
+  "description": "Compile-check Unity C# in the running Unity Editor after every change, and fix the errors Unity reports.",
+  "author": {
+    "name": "Ruizhen Gu",
+    "url": "https://github.com/ruizhengu"
+  },
+  "homepage": "https://github.com/ruizhengu/unity-agent-bridge",
+  "repository": "https://github.com/ruizhengu/unity-agent-bridge",
+  "license": "MIT",
+  "keywords": ["unity", "csharp", "compiler", "gamedev", "cli"]
+}

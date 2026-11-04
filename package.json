@@ -1,0 +1,39 @@
+{
+  "name": "unity-agent-cli",
+  "version": "0.2.0",
+  "description": "Let AI coding agents compile-check C# in the running Unity Editor and fix their own errors.",
+  "keywords": [
+    "unity",
+    "unity3d",
+    "ai",
+    "agent",
+    "claude-code",
+    "codex",
+    "cursor",
+    "compiler",
+    "cli"
+  ],
+  "homepage": "https://github.com/ruizhengu/unity-agent-bridge#readme",
+  "bugs": "https://github.com/ruizhengu/unity-agent-bridge/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruizhengu/unity-agent-bridge.git"
+  },
+  "license": "MIT",
+  "author": "Ruizhen Gu",
+  "type": "module",
+  "bin": {
+    "unity-agent-cli": "cli/index.js"
+  },
+  "files": [
+    "cli/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test",
+    "preversion": "node scripts/version.js check && npm test",
+    "version": "node scripts/version.js sync && git add plugins/unity-agent-bridge/.claude-plugin/plugin.json"
+  }
+}

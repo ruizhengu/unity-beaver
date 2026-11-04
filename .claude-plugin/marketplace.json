@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "unity-agent-bridge",
+  "description": "Agent skill for compile-checking Unity C# with unity-agent-cli.",
+  "owner": {
+    "name": "Ruizhen Gu"
+  },
+  "plugins": [
+    {
+      "name": "unity-agent-bridge",
+      "description": "Compile-check Unity C# in the running Unity Editor after every change, and fix the errors Unity reports.",
+      "category": "development",
+      "source": "./plugins/unity-agent-bridge",
+      "homepage": "https://github.com/ruizhengu/unity-agent-bridge"
+    }
+  ]
+}
