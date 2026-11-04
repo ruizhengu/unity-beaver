@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 (2026-11-04)
+
+Unity Agent Bridge is now **Unity Beaver** 🦫, with a logo to match. Nothing changes in Unity: projects that already have the Unity package keep working as they are.
+
+### Changed
+
+- The npm package is now `unity-beaver`: `npm uninstall -g unity-agent-cli`, then `npm install -g unity-beaver`. The `unity-agent-cli` package is deprecated.
+- The command is now `unity-beaver`. `unity-agent-cli` still works, so instructions written by older versions of `init` keep working. Run `unity-beaver init` to refresh them.
+- The repository moved to `ruizhengu/unity-beaver`. GitHub redirects the old URLs, including the Unity package URL in existing `Packages/manifest.json` files.
+- The agent skill and Claude Code plugin are now called `unity-beaver`: `npx skills add ruizhengu/unity-beaver`, or `/plugin marketplace add ruizhengu/unity-beaver` then `/plugin install unity-beaver@unity-beaver`.
+
 ## 0.2.0 (2026-11-04)
 
 The Unity package is unchanged (still 0.1.0), so projects that already have it don't need to update anything in Unity.

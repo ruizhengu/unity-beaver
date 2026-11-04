@@ -15,7 +15,7 @@ body:
   - type: textarea
     id: doctor
     attributes:
-      label: Output of `unity-agent-cli doctor`
+      label: Output of `unity-beaver doctor`
       description: Run it from your Unity project folder and paste the result.
       render: text
     validations:
@@ -23,7 +23,7 @@ body:
   - type: textarea
     id: check
     attributes:
-      label: Output of `unity-agent-cli check` (if relevant)
+      label: Output of `unity-beaver check` (if relevant)
       render: text
   - type: input
     id: agent

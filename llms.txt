@@ -1,33 +1,33 @@
-# Unity Agent Bridge
+# Unity Beaver
 
-> Lets AI coding agents compile-check C# in the running Unity Editor. After editing `.cs` files, the agent runs `unity-agent-cli check`; Unity recompiles and the agent gets back real compiler errors with `file:line:column`, so it can fix its own mistakes.
+> Lets AI coding agents compile-check C# in the running Unity Editor. After editing `.cs` files, the agent runs `unity-beaver check`; Unity recompiles and the agent gets back real compiler errors with `file:line:column`, so it can fix its own mistakes.
 
-Source: https://github.com/ruizhengu/unity-agent-bridge
+Source: https://github.com/ruizhengu/unity-beaver
 Author: Ruizhen Gu
 
 ## Set up for the user
 
-If you are an agent asked to set up Unity Agent Bridge, do the steps below in order. Tell the user what each command does before you run it.
+If you are an agent asked to set up Unity Beaver, do the steps below in order. Tell the user what each command does before you run it.
 
 1. Install the CLI. It needs Node.js 18 or newer (`node --version`).
-   `npm install -g unity-agent-cli`
+   `npm install -g unity-beaver`
 2. Go to the Unity project folder (it has `Assets/` and `ProjectSettings/`). Preview, then apply:
-   `unity-agent-cli init --dry-run`
-   `unity-agent-cli init`
+   `unity-beaver init --dry-run`
+   `unity-beaver init`
    This adds the Unity package to `Packages/manifest.json` and writes compile-check instructions to `AGENTS.md` (and `CLAUDE.md`).
 3. Ask the user to switch to the Unity Editor so it imports the package. Then run:
-   `unity-agent-cli doctor`
+   `unity-beaver doctor`
    Setup is done when it ends with "All set." Otherwise relay the `→` hints to the user.
 4. Optional, for Claude Code, Codex, Cursor and other agents that support skills:
-   `npx skills add ruizhengu/unity-agent-bridge -g -y`
-   Or in Claude Code: `/plugin marketplace add ruizhengu/unity-agent-bridge`, then `/plugin install unity-agent-bridge@unity-agent-bridge`.
+   `npx skills add ruizhengu/unity-beaver -g -y`
+   Or in Claude Code: `/plugin marketplace add ruizhengu/unity-beaver`, then `/plugin install unity-beaver@unity-beaver`.
 
 ## Using it
 
-After you create, edit, move, or delete `.cs` files, run `unity-agent-cli check` from the project folder:
+After you create, edit, move, or delete `.cs` files, run `unity-beaver check` from the project folder:
 
 - Exit `0`: Unity compiled the project. Warnings don't block.
 - Exit `1`: fix each error at its `file:line:column`, then run the check again until it exits `0`.
-- Exit `2`: Unity couldn't be reached. Run `unity-agent-cli doctor`, tell the user what it reports, and stop retrying.
+- Exit `2`: Unity couldn't be reached. Run `unity-beaver doctor`, tell the user what it reports, and stop retrying.
 
-`unity-agent-cli check --json` prints `errors` and `warnings` with `file`, `line`, `column`, `code`, and `message`.
+`unity-beaver check --json` prints `errors` and `warnings` with `file`, `line`, `column`, `code`, and `message`.

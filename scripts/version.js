@@ -5,7 +5,7 @@
 //                                   Claude Code plugin manifest
 import fs from 'node:fs';
 
-const PLUGIN_MANIFEST = 'plugins/unity-agent-bridge/.claude-plugin/plugin.json';
+const PLUGIN_MANIFEST = 'plugins/unity-beaver/.claude-plugin/plugin.json';
 const version = process.env.npm_new_version;
 
 if (!version) {

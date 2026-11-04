@@ -1,9 +1,10 @@
 <div align="center">
-  <h1>Unity Agent Bridge</h1>
+  <img src=".github/logo.png" alt="Unity Beaver logo" width="120" height="120">
+  <h1>Unity Beaver</h1>
   <p><b>Let AI coding agents compile their C# in your running Unity Editor, and fix their own mistakes.</b></p>
-  <a href="https://www.npmjs.com/package/unity-agent-cli"><img src="https://img.shields.io/npm/v/unity-agent-cli?style=flat-square&label=npm" alt="npm version"></a>
-  <a href="https://github.com/ruizhengu/unity-agent-bridge/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ruizhengu/unity-agent-bridge/ci.yml?branch=main&style=flat-square&label=CI" alt="CI"></a>
-  <a href="https://github.com/ruizhengu/unity-agent-bridge/stargazers"><img src="https://img.shields.io/github/stars/ruizhengu/unity-agent-bridge?style=flat-square" alt="Stars"></a>
+  <a href="https://www.npmjs.com/package/unity-beaver"><img src="https://img.shields.io/npm/v/unity-beaver?style=flat-square&label=npm" alt="npm version"></a>
+  <a href="https://github.com/ruizhengu/unity-beaver/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ruizhengu/unity-beaver/ci.yml?branch=main&style=flat-square&label=CI" alt="CI"></a>
+  <a href="https://github.com/ruizhengu/unity-beaver/stargazers"><img src="https://img.shields.io/github/stars/ruizhengu/unity-beaver?style=flat-square" alt="Stars"></a>
   <img src="https://img.shields.io/badge/Unity-2021.3%2B-black?style=flat-square&logo=unity" alt="Unity 2021.3+">
   <img src="https://img.shields.io/badge/Node.js-18%2B-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js 18+">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="MIT License"></a>
@@ -12,27 +13,27 @@
 <br>
 
 ```text
-$ unity-agent-cli check
+$ unity-beaver check
 ✗ Unity found 1 compile error · 4.1s
 
   Assets/Scripts/PlayerController.cs:15:10
   error CS1002: ; expected
 
-Fix the errors above, then run unity-agent-cli check again.
+Fix the errors above, then run unity-beaver check again.
 
   … the agent adds the missing semicolon …
 
-$ unity-agent-cli check
+$ unity-beaver check
 ✓ Unity compiled successfully · 6.3s
 ```
 
 ## Features
 
 - **Closes the loop**: after editing C#, your agent runs one command and gets Unity's real compiler errors back, so it fixes them before you switch windows
-- **One-command setup**: `unity-agent-cli init` adds the Unity package and the agent instructions to your project
+- **One-command setup**: `unity-beaver init` adds the Unity package and the agent instructions to your project
 - **Works with any agent**: Claude Code, Codex, Cursor, Copilot, Gemini CLI, or anything else that can run a shell command
 - **Clear answers**: `file:line:column` locations, exit codes an agent can act on, and `--json` for scripts
-- **Explains itself**: `unity-agent-cli doctor` checks every link in the chain and tells you how to fix what's broken
+- **Explains itself**: `unity-beaver doctor` checks every link in the chain and tells you how to fix what's broken
 - **Small and local**: zero dependencies, talks only to `127.0.0.1`, no accounts, no telemetry
 
 ## Quick Start
@@ -42,16 +43,16 @@ You need Unity 2021.3 or newer and Node.js 18 or newer.
 **1. Install the CLI**
 
 ```bash
-npm install -g unity-agent-cli
+npm install -g unity-beaver
 ```
 
-Run the same command again later to update.
+Run the same command again later to update. Coming from `unity-agent-cli`, this project's old name? Run `npm uninstall -g unity-agent-cli` first.
 
 **2. Set up your Unity project**
 
 ```bash
 cd path/to/YourUnityProject
-unity-agent-cli init
+unity-beaver init
 ```
 
 `init` adds the Unity package to `Packages/manifest.json` and writes compile-check instructions to `AGENTS.md`, plus a `CLAUDE.md` that points to it. Add `--dry-run` to preview first.
@@ -61,7 +62,7 @@ unity-agent-cli init
 Unity imports the package as soon as it has focus again. Then run:
 
 ```bash
-unity-agent-cli doctor
+unity-beaver doctor
 ```
 
 When it says **All set**, ask your agent to change some C#. It will check its own work.
@@ -70,17 +71,17 @@ When it says **All set**, ask your agent to change some C#. It will check its ow
 
 Tell your agent:
 
-> Set up unity-agent-bridge for this Unity project by reading https://raw.githubusercontent.com/ruizhengu/unity-agent-bridge/main/llms.txt
+> Set up Unity Beaver for this Unity project by reading https://raw.githubusercontent.com/ruizhengu/unity-beaver/main/llms.txt
 
 **Run**
 
 ```bash
-unity-agent-cli check                # Recompile in Unity and report errors
-unity-agent-cli check --json         # Same, as JSON
-unity-agent-cli check --strict       # Fail on compiler warnings too
-unity-agent-cli doctor               # Diagnose the connection and project setup
-unity-agent-cli init --dry-run       # Preview what init would change
-unity-agent-cli --help               # Everything else
+unity-beaver check                # Recompile in Unity and report errors
+unity-beaver check --json         # Same, as JSON
+unity-beaver check --strict       # Fail on compiler warnings too
+unity-beaver doctor               # Diagnose the connection and project setup
+unity-beaver init --dry-run       # Preview what init would change
+unity-beaver --help               # Everything else
 ```
 
 <details>
@@ -89,28 +90,28 @@ unity-agent-cli --help               # Everything else
 **Agent skill**: teaches Claude Code, Codex, Cursor and other agents when and how to run the check, without touching your project's `AGENTS.md`:
 
 ```bash
-npx skills add ruizhengu/unity-agent-bridge -g -y
+npx skills add ruizhengu/unity-beaver -g -y
 ```
 
-As a Claude Code plugin: `/plugin marketplace add ruizhengu/unity-agent-bridge`, then `/plugin install unity-agent-bridge@unity-agent-bridge`.
+As a Claude Code plugin: `/plugin marketplace add ruizhengu/unity-beaver`, then `/plugin install unity-beaver@unity-beaver`.
 
 **Unity package by hand**: in Unity, open **Window › Package Manager**, click **+**, choose the git URL option, and paste:
 
 ```text
-https://github.com/ruizhengu/unity-agent-bridge.git?path=/UnityPackage
+https://github.com/ruizhengu/unity-beaver.git?path=/UnityPackage
 ```
 
 **CLI from the latest unreleased code**:
 
 ```bash
-npm install -g github:ruizhengu/unity-agent-bridge
+npm install -g github:ruizhengu/unity-beaver
 ```
 
 **CLI from a clone**:
 
 ```bash
-git clone https://github.com/ruizhengu/unity-agent-bridge.git
-cd unity-agent-bridge
+git clone https://github.com/ruizhengu/unity-beaver.git
+cd unity-beaver
 npm link
 ```
 
@@ -121,9 +122,9 @@ npm link
 ```mermaid
 sequenceDiagram
     participant Agent as AI agent
-    participant CLI as unity-agent-cli
+    participant CLI as unity-beaver
     participant Unity as Unity Editor
-    Agent->>CLI: unity-agent-cli check
+    Agent->>CLI: unity-beaver check
     CLI->>Unity: GET /refresh
     Note over Unity: AssetDatabase.Refresh()<br/>recompiles changed scripts
     loop until compilation and reload finish
@@ -170,11 +171,12 @@ It works without configuration.
 
 ## Troubleshooting
 
-Start with `unity-agent-cli doctor`. It checks each piece and prints a `→` hint for anything that's wrong.
+Start with `unity-beaver doctor`. It checks each piece and prints a `→` hint for anything that's wrong.
 
 - **"Can't reach Unity"**: the Editor has to be open with your project, and the package installed. Unity's Console should show `Unity Agent Server started on http://127.0.0.1:5142/`.
 - **"Port 5142 is already in use" in the Unity Console**: only one Unity Editor can own the bridge. Close the other project (or whatever `doctor` names), then restart Unity.
 - **A check takes about 8 seconds even when nothing changed**: Unity never says "nothing to compile", so the CLI waits a moment to see whether compilation starts.
+- **`EEXIST` for `unity-agent-cli` when installing**: the package from before the rename is still installed. Run `npm uninstall -g unity-agent-cli`, then install again.
 - **Warnings show up but the check passes**: that's on purpose. Use `--strict` to make warnings fail.
 - **Runtime logs and exceptions are ignored**: the check is about compiling. Play-mode errors don't fail it.
 

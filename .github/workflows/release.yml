@@ -34,13 +34,14 @@ jobs:
             exit 1
           fi
           echo "VERSION=$version" >> "$GITHUB_ENV"
+          echo "PACKAGE=$(node -p "require('./package.json').name")" >> "$GITHUB_ENV"
 
       - run: npm test
 
       - name: Publish to npm
         run: |
-          if [ "$(npm view "unity-agent-cli@$VERSION" version 2>/dev/null)" = "$VERSION" ]; then
-            echo "unity-agent-cli@$VERSION is already on npm, skipping."
+          if [ "$(npm view "$PACKAGE@$VERSION" version 2>/dev/null)" = "$VERSION" ]; then
+            echo "$PACKAGE@$VERSION is already on npm, skipping."
           else
             npm publish
           fi

@@ -1,7 +1,7 @@
 {
-  "name": "unity-agent-cli",
+  "name": "unity-beaver",
   "version": "0.2.0",
-  "description": "Let AI coding agents compile-check C# in the running Unity Editor and fix their own errors.",
+  "description": "Let AI coding agents compile their C# in your running Unity Editor and fix their own errors.",
   "keywords": [
     "unity",
     "unity3d",
@@ -11,18 +11,20 @@
     "codex",
     "cursor",
     "compiler",
-    "cli"
+    "cli",
+    "beaver"
   ],
-  "homepage": "https://github.com/ruizhengu/unity-agent-bridge#readme",
-  "bugs": "https://github.com/ruizhengu/unity-agent-bridge/issues",
+  "homepage": "https://github.com/ruizhengu/unity-beaver#readme",
+  "bugs": "https://github.com/ruizhengu/unity-beaver/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ruizhengu/unity-agent-bridge.git"
+    "url": "git+https://github.com/ruizhengu/unity-beaver.git"
   },
   "license": "MIT",
   "author": "Ruizhen Gu",
   "type": "module",
   "bin": {
+    "unity-beaver": "cli/index.js",
     "unity-agent-cli": "cli/index.js"
   },
   "files": [
@@ -34,6 +36,6 @@
   "scripts": {
     "test": "node --test",
     "preversion": "node scripts/version.js check && npm test",
-    "version": "node scripts/version.js sync && git add plugins/unity-agent-bridge/.claude-plugin/plugin.json"
+    "version": "node scripts/version.js sync && git add plugins/unity-beaver/.claude-plugin/plugin.json"
   }
 }

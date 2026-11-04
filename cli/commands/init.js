@@ -11,7 +11,7 @@ export async function init(options, ui, { cwd = process.cwd() } = {}) {
     ui.err(`${ce.red(SYMBOLS.fail)} ${ce.bold(`No Unity project found at ${start}`)}`);
     ui.err();
     ui.err('  Run init from your Unity project folder (the one with Assets/ and ProjectSettings/),');
-    ui.err(`  or pass its path: ${ce.cyan('unity-agent-cli init path/to/MyGame')}`);
+    ui.err(`  or pass its path: ${ce.cyan('unity-beaver init path/to/MyGame')}`);
     return 1;
   }
 
@@ -27,7 +27,7 @@ export async function init(options, ui, { cwd = process.cwd() } = {}) {
   if (!dryRun) applyPlan(root, plan);
 
   const version = unityVersion(root);
-  ui.out(c.bold(`Unity Agent Bridge · init${dryRun ? ' (dry run)' : ''}`));
+  ui.out(c.bold(`Unity Beaver · init${dryRun ? ' (dry run)' : ''}`));
   ui.out();
   ui.out(`  ${c.dim('Project')}  ${root}${version ? c.dim(` · Unity ${version}`) : ''}`);
   ui.out();
@@ -40,16 +40,16 @@ export async function init(options, ui, { cwd = process.cwd() } = {}) {
 
   const changes = plan.filter((step) => step.action !== 'skip').length;
   if (dryRun) {
-    ui.out(changes ? `Nothing was written. Run ${c.cyan('unity-agent-cli init')} to apply.` : 'Already set up. Nothing to change.');
+    ui.out(changes ? `Nothing was written. Run ${c.cyan('unity-beaver init')} to apply.` : 'Already set up. Nothing to change.');
     return 0;
   }
   if (changes === 0) {
-    ui.out(`Already set up. Run ${c.cyan('unity-agent-cli doctor')} to check the connection.`);
+    ui.out(`Already set up. Run ${c.cyan('unity-beaver doctor')} to check the connection.`);
     return 0;
   }
   ui.out(c.bold('Next'));
   ui.out(`  1. Switch to Unity so it imports the package ${c.dim('(the Console shows "Unity Agent Server started")')}`);
-  ui.out(`  2. Run ${c.cyan('unity-agent-cli doctor')} to confirm everything is connected`);
+  ui.out(`  2. Run ${c.cyan('unity-beaver doctor')} to confirm everything is connected`);
   return 0;
 }
 

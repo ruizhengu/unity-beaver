@@ -22,11 +22,11 @@ function cli(args, { url, cwd } = {}) {
   });
 }
 
-describe('unity-agent-cli', () => {
+describe('unity-beaver', () => {
   it('prints its version', async () => {
     const { code, stdout } = await cli(['--version']);
     assert.equal(code, 0);
-    assert.equal(stdout.trim(), `unity-agent-cli ${version}`);
+    assert.equal(stdout.trim(), `unity-beaver ${version}`);
   });
 
   it('shows help with no arguments', async () => {
@@ -52,7 +52,7 @@ describe('unity-agent-cli', () => {
     const { code, stderr } = await cli(['check'], { url: await closedPortUrl() });
     assert.equal(code, 2);
     assert.match(stderr, /Can't reach Unity/);
-    assert.match(stderr, /unity-agent-cli doctor/);
+    assert.match(stderr, /unity-beaver doctor/);
   });
 
   it('reports compile errors with locations and exits 1', async () => {
@@ -110,7 +110,7 @@ describe('unity-agent-cli', () => {
     const { code, stdout } = await cli(['init', root]);
     assert.equal(code, 0);
     assert.match(stdout, /Added the Unity package/);
-    assert.match(stdout, /unity-agent-cli doctor/);
+    assert.match(stdout, /unity-beaver doctor/);
     assert.ok(fs.existsSync(path.join(root, 'AGENTS.md')));
 
     const again = await cli(['init', root]);

@@ -66,9 +66,11 @@ describe('planInit / applyPlan', () => {
     assert.equal(read(root, 'AGENTS.md'), `# Rules\n\n${AGENT_INSTRUCTIONS}\n\n## More\n`);
   });
 
-  it('leaves hand-written instructions from older versions alone', () => {
-    const root = makeUnityProject({ 'CLAUDE.md': 'Always run `unity-agent-cli check` after editing C#.\n' });
-    assert.equal(actions(planInit(root))['CLAUDE.md'], 'skip');
+  it('leaves hand-written instructions alone, under either command name', () => {
+    for (const command of ['unity-beaver', 'unity-agent-cli']) {
+      const root = makeUnityProject({ 'CLAUDE.md': `Always run \`${command} check\` after editing C#.\n` });
+      assert.equal(actions(planInit(root))['CLAUDE.md'], 'skip');
+    }
   });
 
   it('keeps a package that is already installed from another source', () => {

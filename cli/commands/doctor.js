@@ -19,7 +19,7 @@ export async function doctor(options, ui, { bridge = createBridge(), cwd = proce
   );
 
   const nodeMajor = Number(process.versions.node.split('.')[0]);
-  if (nodeMajor >= 18) add('ok', `unity-agent-cli ${VERSION} on Node.js ${process.version}`);
+  if (nodeMajor >= 18) add('ok', `unity-beaver ${VERSION} on Node.js ${process.version}`);
   else add('fail', `Node.js ${process.version} is too old`, ['Install Node.js 18 or newer']);
 
   if (unityCount == null) add('skip', "Couldn't check for a running Unity Editor");
@@ -40,10 +40,10 @@ export async function doctor(options, ui, { bridge = createBridge(), cwd = proce
     const version = unityVersion(root);
     add('ok', `Unity project: ${root}${version ? ` (Unity ${version})` : ''}`);
     if (pkg) add('ok', 'Unity package is in Packages/manifest.json');
-    else add('fail', 'Unity package is missing from Packages/manifest.json', ['Run: unity-agent-cli init']);
+    else add('fail', 'Unity package is missing from Packages/manifest.json', ['Run: unity-beaver init']);
     const file = instructionsFile(root);
     if (file) add('ok', `Agent instructions found in ${file}`);
-    else add('warn', 'No agent instructions in AGENTS.md or CLAUDE.md', ['Run: unity-agent-cli init']);
+    else add('warn', 'No agent instructions in AGENTS.md or CLAUDE.md', ['Run: unity-beaver init']);
   }
 
   const failures = checks.filter((item) => item.status === 'fail').length;
@@ -61,14 +61,14 @@ export async function doctor(options, ui, { bridge = createBridge(), cwd = proce
     warn: c.yellow(SYMBOLS.warn),
     skip: c.dim(SYMBOLS.skip),
   };
-  ui.out(c.bold('Unity Agent Bridge · doctor'));
+  ui.out(c.bold('Unity Beaver · doctor'));
   ui.out();
   for (const item of checks) {
     ui.out(`  ${icon[item.status]} ${item.status === 'skip' ? c.dim(item.title) : item.title}`);
     for (const hint of item.hints) ui.out(c.dim(`    ${SYMBOLS.arrow} ${hint}`));
   }
   ui.out();
-  if (ok) ui.out(`${c.green('All set.')} Your agent can run ${c.cyan('unity-agent-cli check')}.`);
+  if (ok) ui.out(`${c.green('All set.')} Your agent can run ${c.cyan('unity-beaver check')}.`);
   else ui.out(`${c.red(`${plural(failures, 'problem')} found.`)} Follow the ${SYMBOLS.arrow} hints above, then run doctor again.`);
   return ok ? 0 : 1;
 }
@@ -84,12 +84,12 @@ async function bridgeHints(error, { unityCount, root, pkg, bridge, probe }) {
     return [`Something other than the bridge is answering on port ${port}${who}`, 'Close it, then restart Unity so the bridge can take the port'];
   }
   if (unityCount === 0) return ['Open your project in the Unity Editor, then run doctor again'];
-  if (root && !pkg) return ['The Unity package isn\'t installed. Run: unity-agent-cli init, then switch to Unity'];
+  if (root && !pkg) return ['The Unity package isn\'t installed. Run: unity-beaver init, then switch to Unity'];
   return [
     'In the Unity Console, look for "Unity Agent Server started on http://127.0.0.1:5142/"',
     'If it says the port is in use, close whatever holds it and restart Unity',
     'Unity may still be importing or compiling; wait for it to finish',
-    ...(root ? [] : ['Not installed yet? Run unity-agent-cli init in your Unity project folder']),
+    ...(root ? [] : ['Not installed yet? Run unity-beaver init in your Unity project folder']),
   ];
 }
 

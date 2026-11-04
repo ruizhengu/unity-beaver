@@ -11,13 +11,13 @@ export const BLOCK_END = '<!-- unity-agent-bridge:end -->';
 export const AGENT_INSTRUCTIONS = `${BLOCK_START}
 ## Unity compile check
 
-This Unity project uses [unity-agent-bridge](${REPO_URL}) to compile C# in the running Unity Editor.
+This Unity project uses [Unity Beaver](${REPO_URL}) to compile C# in the running Unity Editor.
 
-After you create, edit, move, or delete any \`.cs\` file, run \`unity-agent-cli check\` before you call the work done:
+After you create, edit, move, or delete any \`.cs\` file, run \`unity-beaver check\` before you call the work done:
 
 - Exit \`0\`: Unity compiled the project. Warnings don't block.
 - Exit \`1\`: read each error (\`file:line:column\` and message), fix the code, and run the check again. Repeat until it exits \`0\`.
-- Exit \`2\`: the check couldn't reach Unity. Run \`unity-agent-cli doctor\`, tell the user what it reports, and stop retrying.
+- Exit \`2\`: the check couldn't reach Unity. Run \`unity-beaver doctor\`, tell the user what it reports, and stop retrying.
 ${BLOCK_END}`;
 
 const CLAUDE_IMPORT = '@AGENTS.md';
@@ -132,14 +132,15 @@ function planBlock(file, text) {
       : { file, action: 'update', summary: `Refresh the instructions in ${file}`, content };
   }
   if (mentionsBridge(text)) {
-    return { file, action: 'skip', summary: `${file} already mentions unity-agent-cli (left as is)` };
+    return { file, action: 'skip', summary: `${file} already has compile-check instructions (left as is)` };
   }
   const separator = text.length === 0 || text.endsWith(eol + eol) ? '' : text.endsWith(eol) ? eol : eol + eol;
   return { file, action: 'update', summary: `Add compile-check instructions to ${file}`, content: `${text}${separator}${block}${eol}` };
 }
 
 function mentionsBridge(text) {
-  return text != null && (text.includes(BLOCK_START) || text.includes('unity-agent-cli check'));
+  // `unity-agent-cli` is the command's name before the rename; it still works.
+  return text != null && (text.includes(BLOCK_START) || /\b(unity-beaver|unity-agent-cli) check\b/.test(text));
 }
 
 function readText(file) {

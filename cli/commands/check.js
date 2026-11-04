@@ -61,7 +61,7 @@ export async function check(options, ui, { bridge = createBridge(), timings } = 
   }
   if (!options.strict) printWarnings(warnings, ui);
   ui.out();
-  ui.out(c.dim('Fix the errors above, then run unity-agent-cli check again.'));
+  ui.out(c.dim('Fix the errors above, then run unity-beaver check again.'));
   return EXIT.ERRORS;
 }
 
@@ -78,11 +78,11 @@ function reportFailure(err, bridge, options, ui, durationMs) {
   ui.err(`${ce.red(SYMBOLS.fail)} ${ce.bold(message)}`);
   ui.err();
   if (timedOut) {
-    ui.err(`  Large project? Give Unity more time: ${ce.cyan('UNITY_AGENT_TIMEOUT=120 unity-agent-cli check')}`);
+    ui.err(`  Large project? Give Unity more time: ${ce.cyan('UNITY_AGENT_TIMEOUT=120 unity-beaver check')}`);
     ui.err(`  Or check whether Unity is stuck on a dialog or crashed.`);
   } else {
     ui.err('  Is the Unity Editor open with your project?');
-    ui.err(`  Run ${ce.cyan('unity-agent-cli doctor')} to find out what's wrong.`);
+    ui.err(`  Run ${ce.cyan('unity-beaver doctor')} to find out what's wrong.`);
   }
   return EXIT.UNREACHABLE;
 }

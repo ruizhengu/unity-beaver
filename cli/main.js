@@ -24,7 +24,7 @@ export async function main(argv, io = {}) {
     const ui = createUI(io);
     const option = err.message.match(/'([^']+)'/)?.[1];
     ui.err(`${ui.ce.red(SYMBOLS.fail)} ${option ? `Unknown option: ${option}` : err.message}`);
-    ui.err(`  Run ${ui.ce.cyan('unity-agent-cli --help')} to see what's available.`);
+    ui.err(`  Run ${ui.ce.cyan('unity-beaver --help')} to see what's available.`);
     return 2;
   }
 
@@ -33,7 +33,7 @@ export async function main(argv, io = {}) {
   const [name, ...rest] = positionals;
 
   if (options.version) {
-    ui.out(`unity-agent-cli ${VERSION}`);
+    ui.out(`unity-beaver ${VERSION}`);
     return 0;
   }
   if (options.help || !name || name === 'help') {
@@ -45,7 +45,7 @@ export async function main(argv, io = {}) {
   if (!command) {
     const guess = suggest(name, Object.keys(COMMANDS));
     ui.err(`${ui.ce.red(SYMBOLS.fail)} Unknown command: ${name}${guess ? `. Did you mean ${ui.ce.cyan(guess)}?` : ''}`);
-    ui.err(`  Run ${ui.ce.cyan('unity-agent-cli --help')} to see all commands.`);
+    ui.err(`  Run ${ui.ce.cyan('unity-beaver --help')} to see all commands.`);
     return 2;
   }
   return command({ ...options, path: rest[0] }, ui);
@@ -54,11 +54,12 @@ export async function main(argv, io = {}) {
 function printHelp(ui) {
   const { c } = ui;
   const rows = (items) => items.map(([left, right]) => `  ${c.cyan(left.padEnd(18))}${right}`).join('\n');
-  ui.out(`${c.bold('unity-agent-cli')} ${c.dim(VERSION)}
+  ui.out(`${c.bold('unity-beaver')} ${c.dim(VERSION)}
 Let AI coding agents compile-check C# in the running Unity Editor.
 
 ${c.bold('Usage')}
-  unity-agent-cli <command> [options]
+  unity-beaver <command> [options]
+  ${c.dim('unity-agent-cli, the name before 0.3.0, runs the same commands.')}
 
 ${c.bold('Commands')}
 ${rows([
@@ -81,9 +82,9 @@ ${c.bold('Exit codes')} ${c.dim('(check)')}
   0 compiled · 1 compile errors · 2 couldn't reach Unity
 
 ${c.bold('Examples')}
-  unity-agent-cli init              ${c.dim('# run once in your Unity project folder')}
-  unity-agent-cli check             ${c.dim('# after editing .cs files')}
-  unity-agent-cli check --json      ${c.dim('# structured errors for scripts and agents')}
+  unity-beaver init              ${c.dim('# run once in your Unity project folder')}
+  unity-beaver check             ${c.dim('# after editing .cs files')}
+  unity-beaver check --json      ${c.dim('# structured errors for scripts and agents')}
 
 ${c.dim(`Docs: ${REPO_URL}`)}`);
 }

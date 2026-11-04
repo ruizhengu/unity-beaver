@@ -39,7 +39,7 @@ describe('doctor', () => {
     const root = makeUnityProject();
     const { code, out } = await run({ bridge: fakeBridge(['down']), cwd: root, probe: probe(1) });
     assert.equal(code, 1);
-    assert.match(out, /Run: unity-agent-cli init/);
+    assert.match(out, /Run: unity-beaver init/);
     assert.match(out, /Unity package is missing/);
   });
 

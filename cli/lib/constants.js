@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 const pkg = createRequire(import.meta.url)('../../package.json');
 
 export const VERSION = pkg.version;
-export const REPO_URL = 'https://github.com/ruizhengu/unity-agent-bridge';
+export const REPO_URL = 'https://github.com/ruizhengu/unity-beaver';
 
 // The Unity package listens here. The port is fixed in UnityAgentServer.cs.
 // UNITY_AGENT_BRIDGE_URL exists so the test suite can point at a mock server.
