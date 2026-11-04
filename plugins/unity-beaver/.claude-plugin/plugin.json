@@ -1,6 +1,6 @@
 {
   "name": "unity-beaver",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Compile-check Unity C# in the running Unity Editor after every change, and fix the errors Unity reports.",
   "author": {
     "name": "Ruizhen Gu",
