@@ -32,7 +32,8 @@ export async function init(options, ui, { cwd = process.cwd() } = {}) {
   ui.out(`  ${c.dim('Project')}  ${root}${version ? c.dim(` · Unity ${version}`) : ''}`);
   ui.out();
   for (const step of plan) {
-    if (step.action === 'skip') ui.out(`  ${c.dim(SYMBOLS.skip)} ${c.dim(step.summary)}`);
+    if (step.warn) ui.out(`  ${c.yellow(SYMBOLS.warn)} ${step.summary}`);
+    else if (step.action === 'skip') ui.out(`  ${c.dim(SYMBOLS.skip)} ${c.dim(step.summary)}`);
     else if (dryRun) ui.out(`  ${c.cyan(SYMBOLS.arrow)} Would ${lowerFirst(step.summary)}`);
     else ui.out(`  ${c.green(SYMBOLS.ok)} ${pastTense(step.summary)}`);
   }

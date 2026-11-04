@@ -19,9 +19,7 @@ describe('repository', () => {
 
   it('ships only the CLI to npm', () => {
     assert.deepEqual(pkg.files, ['cli/']);
-    assert.equal(pkg.bin['unity-beaver'], 'cli/index.js');
-    // The name before 0.3.0. Projects set up back then still call it.
-    assert.equal(pkg.bin['unity-agent-cli'], 'cli/index.js');
+    assert.deepEqual(pkg.bin, { 'unity-beaver': 'cli/index.js', ub: 'cli/index.js' });
     assert.match(read('cli/index.js'), /^#!\/usr\/bin\/env node\r?\n/);
   });
 

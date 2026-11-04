@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process';
 import { createBridge } from '../lib/bridge.js';
 import { VERSION } from '../lib/constants.js';
-import { findUnityProject, installedPackage, instructionsFile, unityVersion } from '../lib/project.js';
+import { findUnityProject, installedPackage, instructionsFile, outdatedInstructions, unityVersion } from '../lib/project.js';
 import { plural, SYMBOLS } from '../lib/ui.js';
 
 export async function doctor(options, ui, { bridge = createBridge(), cwd = process.cwd(), probe = systemProbe } = {}) {
@@ -44,6 +44,11 @@ export async function doctor(options, ui, { bridge = createBridge(), cwd = proce
     const file = instructionsFile(root);
     if (file) add('ok', `Agent instructions found in ${file}`);
     else add('warn', 'No agent instructions in AGENTS.md or CLAUDE.md', ['Run: unity-beaver init']);
+    for (const { file, fix } of outdatedInstructions(root)) {
+      add('warn', `${file} tells agents to run unity-agent-cli, which is now unity-beaver`, [
+        fix === 'init' ? 'Run: unity-beaver init' : `Replace unity-agent-cli with unity-beaver in ${file}`,
+      ]);
+    }
   }
 
   const failures = checks.filter((item) => item.status === 'fail').length;

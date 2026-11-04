@@ -59,7 +59,7 @@ Let AI coding agents compile-check C# in the running Unity Editor.
 
 ${c.bold('Usage')}
   unity-beaver <command> [options]
-  ${c.dim('unity-agent-cli, the name before 0.3.0, runs the same commands.')}
+  ub <command> [options]            ${c.dim('# short name, same commands')}
 
 ${c.bold('Commands')}
 ${rows([

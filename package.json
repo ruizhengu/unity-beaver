@@ -25,7 +25,7 @@
   "type": "module",
   "bin": {
     "unity-beaver": "cli/index.js",
-    "unity-agent-cli": "cli/index.js"
+    "ub": "cli/index.js"
   },
   "files": [
     "cli/"

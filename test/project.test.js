@@ -11,6 +11,7 @@ import {
   findUnityProject,
   installedPackage,
   instructionsFile,
+  outdatedInstructions,
   planInit,
   unityVersion,
 } from '../cli/lib/project.js';
@@ -66,11 +67,32 @@ describe('planInit / applyPlan', () => {
     assert.equal(read(root, 'AGENTS.md'), `# Rules\n\n${AGENT_INSTRUCTIONS}\n\n## More\n`);
   });
 
-  it('leaves hand-written instructions alone, under either command name', () => {
-    for (const command of ['unity-beaver', 'unity-agent-cli']) {
+  it('leaves hand-written instructions alone', () => {
+    for (const command of ['unity-beaver', 'ub']) {
       const root = makeUnityProject({ 'CLAUDE.md': `Always run \`${command} check\` after editing C#.\n` });
-      assert.equal(actions(planInit(root))['CLAUDE.md'], 'skip');
+      const step = planInit(root).find((s) => s.file === 'CLAUDE.md');
+      assert.equal(step.action, 'skip');
+      assert.ok(!step.warn);
     }
+  });
+
+  it('flags hand-written instructions that use the old command name', () => {
+    const root = makeUnityProject({ 'CLAUDE.md': 'Always run `unity-agent-cli check` after editing C#.\n' });
+    const step = planInit(root).find((s) => s.file === 'CLAUDE.md');
+    assert.equal(step.action, 'skip');
+    assert.ok(step.warn);
+    assert.match(step.summary, /Change it to unity-beaver/);
+  });
+
+  it('finds instructions that still use the old command name', () => {
+    const oldBlock = `${BLOCK_START}\nRun \`unity-agent-cli check\`.\n${BLOCK_END}\n`;
+    const root = makeUnityProject({ 'AGENTS.md': oldBlock, 'CLAUDE.md': 'Run `unity-agent-cli check`.\n' });
+    assert.deepEqual(outdatedInstructions(root), [
+      { file: 'AGENTS.md', fix: 'init' },
+      { file: 'CLAUDE.md', fix: 'edit' },
+    ]);
+    applyPlan(root, planInit(root));
+    assert.deepEqual(outdatedInstructions(root), [{ file: 'CLAUDE.md', fix: 'edit' }]);
   });
 
   it('keeps a package that is already installed from another source', () => {

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0 (2026-11-04)
+
+### Added
+
+- `ub`, a short name for `unity-beaver`: `ub check`, `ub doctor`, `ub init`.
+- `doctor` warns when `AGENTS.md` or `CLAUDE.md` still tells agents to run `unity-agent-cli`, and `init` points out hand-written instructions that use it.
+
+### Removed
+
+- The `unity-agent-cli` command name. If your project's instructions still use it, run `unity-beaver init` to update the ones it wrote, and change any you wrote by hand. Installing `unity-beaver` no longer conflicts with the old `unity-agent-cli` package, though you can uninstall that one now.
+
 ## 0.3.0 (2026-11-04)
 
 Unity Agent Bridge is now **Unity Beaver** 🦫, with a logo to match. Nothing changes in Unity: projects that already have the Unity package keep working as they are.

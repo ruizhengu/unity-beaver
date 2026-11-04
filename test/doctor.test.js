@@ -43,6 +43,13 @@ describe('doctor', () => {
     assert.match(out, /Unity package is missing/);
   });
 
+  it('warns when instructions still use the old command name', async () => {
+    const root = makeUnityProject({ 'CLAUDE.md': 'Run `unity-agent-cli check` after editing C#.\n' });
+    const { out } = await run({ bridge: fakeBridge([false]), cwd: root, probe: probe(1) });
+    assert.match(out, /⚠ CLAUDE\.md tells agents to run unity-agent-cli, which is now unity-beaver/);
+    assert.match(out, /Replace unity-agent-cli with unity-beaver in CLAUDE\.md/);
+  });
+
   it('names the process squatting on the port', async () => {
     const bridge = { url: 'http://127.0.0.1:5142', ping: async () => Promise.reject(Object.assign(new Error('HTTP 404 from /ping'), { code: 'BAD_STATUS' })) };
     const { out } = await run({ bridge, cwd: process.cwd(), probe: probe(1, { pid: 42, name: 'node' }) });

@@ -46,7 +46,9 @@ You need Unity 2021.3 or newer and Node.js 18 or newer.
 npm install -g unity-beaver
 ```
 
-Run the same command again later to update. Coming from `unity-agent-cli`, this project's old name? Run `npm uninstall -g unity-agent-cli` first.
+That gives you two names for the same command: `unity-beaver`, and `ub` for short. Run the install again later to update.
+
+Coming from `unity-agent-cli`, this project's old name? Run `npm uninstall -g unity-agent-cli`, then `unity-beaver init` in your project so its agent instructions use the new name.
 
 **2. Set up your Unity project**
 
@@ -75,13 +77,15 @@ Tell your agent:
 
 **Run**
 
+`ub` is short for `unity-beaver`. Agents get the full name in their instructions, since it says what it is.
+
 ```bash
-unity-beaver check                # Recompile in Unity and report errors
-unity-beaver check --json         # Same, as JSON
-unity-beaver check --strict       # Fail on compiler warnings too
-unity-beaver doctor               # Diagnose the connection and project setup
-unity-beaver init --dry-run       # Preview what init would change
-unity-beaver --help               # Everything else
+ub check                # Recompile in Unity and report errors
+ub check --json         # Same, as JSON
+ub check --strict       # Fail on compiler warnings too
+ub doctor               # Diagnose the connection and project setup
+ub init --dry-run       # Preview what init would change
+ub --help               # Everything else
 ```
 
 <details>
@@ -176,7 +180,7 @@ Start with `unity-beaver doctor`. It checks each piece and prints a `→` hint f
 - **"Can't reach Unity"**: the Editor has to be open with your project, and the package installed. Unity's Console should show `Unity Agent Server started on http://127.0.0.1:5142/`.
 - **"Port 5142 is already in use" in the Unity Console**: only one Unity Editor can own the bridge. Close the other project (or whatever `doctor` names), then restart Unity.
 - **A check takes about 8 seconds even when nothing changed**: Unity never says "nothing to compile", so the CLI waits a moment to see whether compilation starts.
-- **`EEXIST` for `unity-agent-cli` when installing**: the package from before the rename is still installed. Run `npm uninstall -g unity-agent-cli`, then install again.
+- **`unity-agent-cli: command not found`**: that's the command's name before 0.3.0. Run `unity-beaver init` to update the instructions it wrote, and change any you wrote by hand. `doctor` points out files that still use the old name.
 - **Warnings show up but the check passes**: that's on purpose. Use `--strict` to make warnings fail.
 - **Runtime logs and exceptions are ignored**: the check is about compiling. Play-mode errors don't fail it.
 

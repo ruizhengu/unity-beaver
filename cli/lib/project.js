@@ -22,6 +22,9 @@ ${BLOCK_END}`;
 
 const CLAUDE_IMPORT = '@AGENTS.md';
 
+// The command was called unity-agent-cli before 0.3.0, and that name no longer exists.
+const OLD_COMMAND = /\bunity-agent-cli\b/;
+
 /** Walks up from `start` to the folder that holds ProjectSettings/ProjectVersion.txt. */
 export function findUnityProject(start = process.cwd()) {
   let dir = path.resolve(start);
@@ -55,6 +58,24 @@ export function instructionsFile(root) {
     if (mentionsBridge(readText(path.join(root, name)))) return name;
   }
   return null;
+}
+
+/**
+ * Instructions that still tell agents to run unity-agent-cli. `fix` is 'init' when
+ * the old name is only inside the block init wrote (so init can refresh it), and
+ * 'edit' when someone wrote it by hand.
+ */
+export function outdatedInstructions(root) {
+  const found = [];
+  for (const file of ['AGENTS.md', 'CLAUDE.md']) {
+    const text = readText(path.join(root, file));
+    if (text == null || !OLD_COMMAND.test(text)) continue;
+    const start = text.indexOf(BLOCK_START);
+    const end = text.indexOf(BLOCK_END);
+    const outside = start !== -1 && end > start ? text.slice(0, start) + text.slice(end) : text;
+    found.push({ file, fix: OLD_COMMAND.test(outside) ? 'edit' : 'init' });
+  }
+  return found;
 }
 
 /**
@@ -132,15 +153,17 @@ function planBlock(file, text) {
       : { file, action: 'update', summary: `Refresh the instructions in ${file}`, content };
   }
   if (mentionsBridge(text)) {
-    return { file, action: 'skip', summary: `${file} already has compile-check instructions (left as is)` };
+    return OLD_COMMAND.test(text)
+      ? { file, action: 'skip', warn: true, summary: `${file} still says unity-agent-cli, the old name. Change it to unity-beaver` }
+      : { file, action: 'skip', summary: `${file} already has compile-check instructions (left as is)` };
   }
   const separator = text.length === 0 || text.endsWith(eol + eol) ? '' : text.endsWith(eol) ? eol : eol + eol;
   return { file, action: 'update', summary: `Add compile-check instructions to ${file}`, content: `${text}${separator}${block}${eol}` };
 }
 
 function mentionsBridge(text) {
-  // `unity-agent-cli` is the command's name before the rename; it still works.
-  return text != null && (text.includes(BLOCK_START) || /\b(unity-beaver|unity-agent-cli) check\b/.test(text));
+  // Instructions from before 0.3.0 say unity-agent-cli. They count, so init doesn't add a second set.
+  return text != null && (text.includes(BLOCK_START) || /\b(unity-beaver|ub|unity-agent-cli) check\b/.test(text));
 }
 
 function readText(file) {
